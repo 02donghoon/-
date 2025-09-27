@@ -39,8 +39,6 @@ public:
 		cout << name << " 선수 // 포지션 : " << position << " // 골 수: " << goals << endl;
 	}
 };
-*/
-/*
 // 자식 클래스: 교수
 class Professor : public Person {
 private:
@@ -76,3 +74,4 @@ int main() {
 
 	return 0;
 }
+
