@@ -1,0 +1,93 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Student {
+	int id;
+	int score;
+};
+
+void printvector(vector<int> in) { //파라미터가 한 개
+	cout << "벡터의 크기: " << in.size() << endl; //벡터의 크기 출력
+	cout << "실제 할당된 메모리 크기: " << in.capacity() << endl; //실제 할당된 메모리 크기 출력
+}
+
+void print_vec(const vector<int>& v, const string& label = "") { //파라미터가 두 개, 두 번째는 값이 없을 수도 있음
+	cout << v.size() << " " << label << endl;
+}
+
+int main(int argc, char const* argv[]) {
+	vector<int>vect; //정수형 벡터 선언
+
+	vect.push_back(15); //push.back() 함수를 통해 벡터의 맨 뒤에 데이터 추가
+	vect.push_back(6);
+	vect.push_back(50);
+
+	vector<int>v1;
+
+	for (int i = 0; i < 10; i++) {
+		v1.push_back(i * 10);
+
+		cout << "push_back -> " << i * 10 << endl;
+		cout << "v1의 크기: " << v1.size() << endl; //벡터의 크기 출력
+		cout << "v1의 용량: " << v1.capacity() << endl; //벡터의 실제 할당된 메모리 크기 출력
+		cout << endl;
+	}
+	for (auto i : vect) {
+		cout << i << " "; //벡터의 모든 데이터 출력
+	}
+
+	cout << endl;
+
+	sort(vect.begin(), vect.end());
+
+	for (auto i : vect) {
+		cout << i << " "; //벡터의 모든 데이터 출력
+	}
+
+	cout << endl;
+
+	vector<Student> svec = { {1,30 }, { 2,80 }, { 4,20 }, { 15,80 } }; //구조체 Student형 벡터 선언
+	svec.push_back({ 7,100 });
+
+	for (auto i : svec) {
+		//cout << "ID: " << i.id << ", Score: " << i.score << endl;
+	}
+
+	cout << endl;
+
+	//sort(svec.begin(), svec.end()); //에러 발생: 구조체는 < 연산자가 정의되어 있지 않음
+	sort(svec.begin(), svec.end(), [](const Student& a, const Student& b) { return a.id < b.id; }); //->객체 사이 간에는 비교 연산자가 정의되어 있지 않으므로 .score 사용하여 정렬 기준을 직접 정의
+
+	//print_vec(svec); //오류 발생: 연산자 오버로딩이 정의되어 있지 않음
+
+	for (auto i : svec) {
+		cout << "ID: " << i.id << ", Score: " << i.score << endl;
+	}
+
+	printvector(vect); //벡터를 함수의 인자로 전달
+	print_vec(vect); //파라미터가 두 개이지만 한 개만 전달
+	print_vec(vect, "Vector"); //두 번째 파라미터도 함께 전달
+	//print_vec("VECTOR"); //에러 발생: 첫 번째 파라미터가 자료형이 다름
+
+	vector<int>::iterator it; //벡터의 반복자(iterator) 선언
+
+	it = vect.begin(); //벡터의 시작 위치를 가리키는 반복자 반환
+
+	while (it != vect.end()) { //벡터의 끝 위치를 가리키는 반복자 반환
+		cout << *it << " "; //반복자가 가리키는 위치의 데이터 출력
+		it++; //반복자를 다음 위치로 이동
+	}
+
+	cout << endl;
+
+	cout << sizeof(vect) << endl; //32바이트
+	/*벡터 안에 들어 있는 실제 데이터의 크기가 아닌 vector 객체 자체가 내부적으로 가지고 있는
+	'세 개의 포인터'크기만 계산하기 때문.
+	1) begin 포인터 (데이터의 시작 위치)
+	2) end 포인터 (데이터의 끝 위치)
+	3) capacity_end 포인터 (할당된 메모리의 끝 위치)
+	*/
+	return 0;
+}
